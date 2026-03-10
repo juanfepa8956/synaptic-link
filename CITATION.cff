@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Synaptic Link: A Lightweight Retrieval Layer for AI Agents over Personal Second Brains"
+version: 1.0.0
+date-released: 2026-03-11
+license: MIT
+authors:
+  - family-names: Du
+    given-names: Lingxiao
+    alias: dlxeva
+repository-code: https://github.com/dlxeva/synaptic-link
+abstract: >
+  Synaptic Link is a local-first retrieval layer that enables AI agents to
+  access personal knowledge bases (e.g. Obsidian vaults) through a
+  three-tier progressive disclosure model: a hot cache always in context,
+  a fast SQLite FTS5 index for on-demand retrieval, and full Markdown files
+  for deep reading. Zero dependencies for core operations.
+keywords:
+  - ai-agents
+  - second-brain
+  - local-first
+  - retrieval
+  - obsidian
+  - sqlite
+  - personal-knowledge-management
+  - progressive-disclosure
