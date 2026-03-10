@@ -82,5 +82,5 @@ search "query"
 - Files prefixed with `_draft_` are excluded from the index.
 - Trigram tokenizer requires **3+ character queries**. Single/two-character CJK
   terms won't match — use longer phrases (e.g. `knowledge base` not `kb`).
-- Default DB location: same directory as `synapse.py` (`synapse.db`).
+- Default DB location: `~/.synaptic-link/synapse.db` (auto-created).
   Override with `--db` or `SYNAPTIC_DB`.
